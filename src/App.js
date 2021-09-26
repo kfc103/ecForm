@@ -1,6 +1,7 @@
 //import "./styles.css";
 import * as React from "react";
 import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
 const defaultValue = {
   subject: "",
@@ -12,45 +13,69 @@ const defaultValue = {
   requirement: "",
   budget: 0
 };
-export default function App() {
-  const [value, setValue] = React.useState(defaultValue);
-  const [result, setResult] = React.useState();
-
-  const handleChange = (event) => {
-    //console.log(event.target.name);
-    //console.log(event.target.value);
-    //if (event.target.name === "name") setValue(event.target.value);
-    //else if (event.target.name === "gender") setGender(event.target.value);
-    //else
-    setValue({ ...value, [event.target.name]: event.target.value });
-    const result = `尋導師
-科目：${event.target.name === "subject" ? event.target.value : value.subject}
-學生年級：${event.target.name === "class" ? event.target.value : value.class}
-地點：${event.target.name === "location" ? event.target.value : value.location}
-時段：${event.target.name === "date" ? event.target.value : value.date}
-每堂時間：${event.target.name === "time" ? event.target.value : value.time}
-每星期堂數：${
-      event.target.name === "numOfLesson"
-        ? event.target.value
-        : value.numOfLesson
-    }
+const resultStr = (
+  subject,
+  clazz,
+  location,
+  date,
+  time,
+  numOfLesson,
+  requirement,
+  budget
+) => {
+  return `尋導師
+科目：${subject}
+學生年級：${clazz}
+地點：${location}
+時段：${date}
+每堂時間：${time}
+每星期堂數：${numOfLesson}
 導師要求：
-${event.target.name === "requirement" ? event.target.value : value.requirement}
-每小時預算：$${
-      event.target.name === "budget" ? event.target.value : value.budget
-    }
+${requirement}
+每小時預算：$${budget}
 
 有意請WTS 66218507 謝謝`;
-    setResult(result);
+};
+
+export default function App() {
+  const [value, setValue] = React.useState(defaultValue);
+  const [result, setResult] = React.useState(
+    resultStr("", "", "", "", "", "", "", "")
+  );
+
+  const handleChange = (event) => {
+    setValue({ ...value, [event.target.name]: event.target.value });
+    setResult(
+      resultStr(
+        event.target.name === "subject" ? event.target.value : value.subject,
+        event.target.name === "class" ? event.target.value : value.class,
+        event.target.name === "location" ? event.target.value : value.location,
+        event.target.name === "date" ? event.target.value : value.date,
+        event.target.name === "time" ? event.target.value : value.time,
+        event.target.name === "numOfLesson"
+          ? event.target.value
+          : value.numOfLesson,
+        event.target.name === "requirement"
+          ? event.target.value
+          : value.requirement,
+        event.target.name === "budget" ? event.target.value : value.budget
+      )
+    );
     //console.log(result);
+    //navigator.clipboard.writeText(decrypted);
+  };
+
+  const copyTextBtnOnClick = () => {
+    navigator.clipboard.writeText(result);
   };
 
   return (
     <div className="App">
       <table>
         <td>
-          <div>
+          <div style={{ width: "30vw", maxWidth: "40vw" }}>
             <TextField
+              fullWidth
               name="subject"
               label="科目"
               value={value.subject}
@@ -58,6 +83,7 @@ ${event.target.name === "requirement" ? event.target.value : value.requirement}
             />
             <br />
             <TextField
+              fullWidth
               name="class"
               label="學生年級"
               value={value.class}
@@ -65,6 +91,7 @@ ${event.target.name === "requirement" ? event.target.value : value.requirement}
             />
             <br />
             <TextField
+              fullWidth
               name="location"
               label="地點"
               multiline
@@ -73,6 +100,7 @@ ${event.target.name === "requirement" ? event.target.value : value.requirement}
             />
             <br />
             <TextField
+              fullWidth
               name="date"
               label="時段"
               multiline
@@ -81,6 +109,7 @@ ${event.target.name === "requirement" ? event.target.value : value.requirement}
             />
             <br />
             <TextField
+              fullWidth
               name="time"
               label="每堂時間"
               multiline
@@ -89,6 +118,7 @@ ${event.target.name === "requirement" ? event.target.value : value.requirement}
             />
             <br />
             <TextField
+              fullWidth
               name="numOfLesson"
               label="每星期堂數"
               multiline
@@ -97,6 +127,7 @@ ${event.target.name === "requirement" ? event.target.value : value.requirement}
             />
             <br />
             <TextField
+              fullWidth
               name="requirement"
               label="導師要求"
               multiline
@@ -105,6 +136,7 @@ ${event.target.name === "requirement" ? event.target.value : value.requirement}
             />
             <br />
             <TextField
+              fullWidth
               name="budget"
               label="每小時預算"
               type="number"
@@ -114,8 +146,11 @@ ${event.target.name === "requirement" ? event.target.value : value.requirement}
           </div>
         </td>
         <td>
-          <div style={{ whiteSpace: "pre-wrap" }}>
-            <TextField multiline value={result} />
+          <div style={{ width: "60vw", whiteSpace: "pre-wrap" }}>
+            <TextField fullWidth multiline value={result} />
+            <Button variant="contained" onClick={copyTextBtnOnClick}>
+              Copy text
+            </Button>
           </div>
         </td>
       </table>
