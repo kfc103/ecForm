@@ -42,7 +42,7 @@ ${event.target.name === "requirement" ? event.target.value : value.requirement}
 
 有意請WTS 66218507 謝謝`;
     setResult(result);
-    console.log(result);
+    //console.log(result);
   };
 
   return (
@@ -114,7 +114,7 @@ ${event.target.name === "requirement" ? event.target.value : value.requirement}
           </div>
         </td>
         <td>
-          <div style={{ "white-space": "pre-wrap" }}>
+          <div style={{ whiteSpace: "pre-wrap" }}>
             <TextField multiline value={result} />
           </div>
         </td>
